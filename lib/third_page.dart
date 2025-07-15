@@ -246,6 +246,7 @@ class _ThirdPageState extends State<ThirdPage> {
     );
   }
 
+  // Confirmation sheet
   void _showConfirmationSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -254,7 +255,7 @@ class _ThirdPageState extends State<ThirdPage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        bool aadharLinked = false;
+        bool aadharLinked = true;
         bool udyamDetail = false;
         return StatefulBuilder(
           builder: (context, setState) => Padding(
@@ -349,14 +350,98 @@ class _ThirdPageState extends State<ThirdPage> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     onPressed: () {
-                      // Your continue logic here
+                      Navigator.of(context).pop();
+                      _showConsentSheet(context);
                     },
-                    child: const Text("Continue", style: TextStyle(fontSize: 16, color: Colors.white)),
+                    child: const Text("Continue", style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold)),
                   ),
                 ),
                 const SizedBox(height: 16),
               ],
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Consent sheet
+  void _showConsentSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16, right: 16, top: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  const Expanded(
+                    child: Text(
+                      "Consent",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+              const Divider(),
+              const SizedBox(height: 16),
+              const Text(
+                "By clicking on Agree – you are hereby: Acknowledge the request made by Digio to provide personal details. –Provide my unconditional access, store and copy all information therein by sharing the information.",
+                style: TextStyle(fontSize: 15, color: Colors.black87),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF60269E),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // Add navigation or logic for Agree here
+                  },
+                  child: const Text("Agree", style: TextStyle(fontSize: 16, color: Colors.white)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.pink,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // Add navigation or logic for Disagree here
+                  },
+                  child: const Text("Disagree", style: TextStyle(fontSize: 16, color: Colors.white)),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
           ),
         );
       },

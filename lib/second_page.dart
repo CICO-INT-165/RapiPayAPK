@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'custom_widgets/back_to_app_btn.dart';
 import 'custom_widgets/get_started.dart';
-import 'third_page.dart'; // Add this import at the top
-import 'main.dart';
+import 'third_page.dart';
 
 class SecondPage extends StatefulWidget {
   const SecondPage({Key? key}) : super(key: key);
@@ -36,94 +35,6 @@ class _SecondPageState extends State<SecondPage> {
         _panController.text = pageData!['valueSecond']['text'];
       }
     });
-  }
-
-  void _showConsentSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 16, right: 16, top: 16,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  const Expanded(
-                    child: Text(
-                      "Consent",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-              const Divider(),
-              const SizedBox(height: 16),
-              const Text(
-                "By clicking on Agree – you are hereby: Acknowledge the request made by Digio to provide personal details. –Provide my unconditional access, store and copy all information therein by sharing the information.",
-                style: TextStyle(fontSize: 15, color: Colors.black87),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF60269E),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ThirdPage()),
-                    );
-                  },
-                  child: const Text("Agree", style: TextStyle(fontSize: 16, color: Colors.white)),
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 0, 179),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => const RapiPayHomePage()),
-                      (route) => false,
-                    );
-                  },
-                  child: const Text("Disagree", style: TextStyle(fontSize: 16, color: Colors.white)),
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -244,7 +155,6 @@ class _SecondPageState extends State<SecondPage> {
                   const SizedBox(height: 2),
                   BackToAppBtn(),
                   const SizedBox(height: 80),
-                  // Optionally show a message if disabled
                   const Center(
                     child: Text(
                       "This section is currently disabled.",
@@ -262,7 +172,10 @@ class _SecondPageState extends State<SecondPage> {
                 child: Center(
                   child: GetStartedButton(
                     onPressed: () {
-                      _showConsentSheet(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ThirdPage()),
+                      );
                     },
                   ),
                 ),
