@@ -250,6 +250,7 @@ class _ThirdPageState extends State<ThirdPage> {
   // Confirmation sheet
   void _showConfirmationSheet(BuildContext context) {
     showModalBottomSheet(
+      backgroundColor: Colors.white,
       context: context,
       isScrollControlled: true,
       enableDrag: false, // <-- Prevent drag-to-dismiss
@@ -257,11 +258,11 @@ class _ThirdPageState extends State<ThirdPage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        final double sheetHeight = MediaQuery.of(context).size.height * 0.5;
+        final double sheetHeight = MediaQuery.of(context).size.height * 0.6;
         bool aadharLinked = true;
         bool udyamDetail = false;
-        bool gstDetail = false; // Example extra credential
-        bool panDetail = false; // Example extra credential
+        bool gstDetail = false;
+        bool panDetail = false; 
 
         return StatefulBuilder(
           builder: (context, setState) => SizedBox(
@@ -443,7 +444,9 @@ class _ThirdPageState extends State<ThirdPage> {
   // Consent sheet
   void _showConsentSheet(BuildContext context) {
     showModalBottomSheet(
+      backgroundColor: Colors.white,
       context: context,
+      enableDrag: false,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -504,7 +507,7 @@ class _ThirdPageState extends State<ThirdPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 199, 1, 172),
+                    backgroundColor: const Color.fromARGB(255, 240, 25, 211),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
