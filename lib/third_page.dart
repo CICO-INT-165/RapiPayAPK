@@ -18,6 +18,7 @@ class _ThirdPageState extends State<ThirdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           children: [
@@ -251,113 +252,187 @@ class _ThirdPageState extends State<ThirdPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      enableDrag: false, // <-- Prevent drag-to-dismiss
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
+        final double sheetHeight = MediaQuery.of(context).size.height * 0.5;
         bool aadharLinked = true;
         bool udyamDetail = false;
+        bool gstDetail = false; // Example extra credential
+        bool panDetail = false; // Example extra credential
+
         return StatefulBuilder(
-          builder: (context, setState) => Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-              left: 16, right: 16, top: 16,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    const Expanded(
-                      child: Text(
-                        "Confirmation",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: Row(
+          builder: (context, setState) => SizedBox(
+            height: sheetHeight,
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                left: 16, right: 16, top: 16,
+              ),
+              child: Column(
+                children: [
+                  Row(
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text("Aadhar Detail", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                            SizedBox(height: 2),
-                            Text("Do you have your mobile number linked with your Aadhar ?", style: TextStyle(fontSize: 13, color: Colors.black54)),
-                          ],
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      const Expanded(
+                        child: Text(
+                          "Confirmation",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      Switch(
-                        value: aadharLinked,
-                        activeColor: Color(0xFF60269E),
-                        onChanged: (val) => setState(() => aadharLinked = val),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text("Udyam Detail", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                            SizedBox(height: 2),
-                            Text("Do you have a Udyam certificate number?", style: TextStyle(fontSize: 13, color: Colors.black54)),
-                          ],
-                        ),
+                  const Divider(),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // Aadhar Detail
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            margin: const EdgeInsets.only(bottom: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: const [
+                                      Text("Aadhar Detail", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                      SizedBox(height: 2),
+                                      Text("Do you have your mobile number linked with your Aadhar ?", style: TextStyle(fontSize: 13, color: Colors.black54)),
+                                    ],
+                                  ),
+                                ),
+                                Switch(
+                                  value: aadharLinked,
+                                  activeColor: Color(0xFF60269E),
+                                  onChanged: (val) => setState(() => aadharLinked = val),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Udyam Detail
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            margin: const EdgeInsets.only(bottom: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: const [
+                                      Text("Udyam Detail", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                      SizedBox(height: 2),
+                                      Text("Do you have a Udyam certificate number?", style: TextStyle(fontSize: 13, color: Colors.black54)),
+                                    ],
+                                  ),
+                                ),
+                                Switch(
+                                  value: udyamDetail,
+                                  activeColor: Color(0xFF60269E),
+                                  onChanged: (val) => setState(() => udyamDetail = val),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // GST Detail (example extra)
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            margin: const EdgeInsets.only(bottom: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: const [
+                                      Text("GST Detail", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                      SizedBox(height: 2),
+                                      Text("Do you have a GST certificate number?", style: TextStyle(fontSize: 13, color: Colors.black54)),
+                                    ],
+                                  ),
+                                ),
+                                Switch(
+                                  value: gstDetail,
+                                  activeColor: Color(0xFF60269E),
+                                  onChanged: (val) => setState(() => gstDetail = val),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // PAN Detail (example extra)
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            margin: const EdgeInsets.only(bottom: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: const [
+                                      Text("PAN Detail", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                      SizedBox(height: 2),
+                                      Text("Do you have a PAN card?", style: TextStyle(fontSize: 13, color: Colors.black54)),
+                                    ],
+                                  ),
+                                ),
+                                Switch(
+                                  value: panDetail,
+                                  activeColor: Color(0xFF60269E),
+                                  onChanged: (val) => setState(() => panDetail = val),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      Switch(
-                        value: udyamDetail,
-                        activeColor: Color(0xFF60269E),
-                        onChanged: (val) => setState(() => udyamDetail = val),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF60269E),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _showConsentSheet(context);
-                    },
-                    child: const Text("Continue", style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold)),
                   ),
-                ),
-                const SizedBox(height: 16),
-              ],
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF60269E),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _showConsentSheet(context);
+                      },
+                      child: const Text("Continue", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
         );
@@ -429,7 +504,7 @@ class _ThirdPageState extends State<ThirdPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.pink,
+                    backgroundColor: const Color.fromARGB(255, 199, 1, 172),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),

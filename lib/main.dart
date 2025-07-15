@@ -52,6 +52,7 @@ class _RapiPayHomePageState extends State<RapiPayHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           children: [
