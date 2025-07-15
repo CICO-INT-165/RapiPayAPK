@@ -1,0 +1,64 @@
+{
+    "apiResponseCode": "200",
+    "apiResponseMessage": "Success",
+    "apiResponseFrom": "NODE_VALIDATE_AGENT",
+    "apiResponseTime": "2024-03-18 10:05:46",
+    "apiResponseData": {
+        "responseCode": "200",
+        "responseMessage": "Success",
+        "pageData": {
+            "isDocPopShown": false,
+            "otpCtaText": "Verify",
+            "ctaText": "Get Started",
+            "titleHintFirst": "Enter your phone number",
+            "documentListTitle": "List of Documents & Requirements",
+            "deeplink": "rapipay://deeplink?p=otpPopup&td_id=1",
+            "otpTitle": "Enter OTP",
+            "version": "1.2",
+            "otpValidationTime": 20,
+            "isCallCenterVerification": false,
+            "isctaEnable": true,
+            "listOfDocuments": {
+                "listData": [
+                    {
+                        "personalProof": "Personal proof:",
+                        "businessProofSubTitle": "GST Certificate Udyam certificate number/Udyog aadhar Shop Establishment Certificate Village Administration Certificate Municipal Administration Certificate Labour Department Certificate Sales/Service/Professional Tax Registration",
+                        "typeTitle": "POS",
+                        "personalProofRequirement": "Aadhar Card, PAN Card",
+                        "businessType": "Proprietor",
+                        "typeSubTitle": "Individual",
+                        "businessProofTitle": "Business Proof(Anyone):"
+                    },
+                    {
+                        "personalProof": "Personal proof:",
+                        "businessProofSubTitle": "NA",
+                        "typeTitle": "Agent",
+                        "personalProofRequirement": "Aadhar Card, PAN Card",
+                        "businessType": "Proprietor",
+                        "typeSubTitle": "Individual",
+                        "businessProofTitle": "Business Proof(Anyone):"
+                    }
+                ],
+                "noteMsg": "NotenYour Mobile Number must be linked with your aadhar number",
+                "requireTitle": "List of documents required to complete Sign up process.",
+                "title": "List of Documents & Requirements"
+            },
+            "otpSubTitle": "Enter the OTP received on your registered mobile number ending with",
+            "title": "Let's get started",
+            "titleHintSecond": "Enter your PAN number",
+            "valueSecond": {
+                "editable": false,
+                "text": "BLYPK2047P",
+                "tag": "panNo"
+            },
+            "otpCtaEnable": true,
+            "valueFirst": {
+                "editable": false,
+                "text": "9764896427",
+                "tag": "mobileNo"
+            }
+        },
+        "deeplink": "",
+        "url": ""
+    }
+}
