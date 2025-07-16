@@ -6,7 +6,7 @@ import 'custom_widgets/get_started.dart';
 import 'third_page.dart';
 
 class SecondPage extends StatefulWidget {
-  const SecondPage({Key? key}) : super(key: key);
+  const SecondPage({super.key});
 
   @override
   State<SecondPage> createState() => _SecondPageState();

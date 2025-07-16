@@ -8,11 +8,11 @@ class LanguageDropdown extends StatelessWidget {
   final ValueChanged<String?> onChanged;
 
   const LanguageDropdown({
-    Key? key,
+    super.key,
     required this.value,
     required this.languages,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

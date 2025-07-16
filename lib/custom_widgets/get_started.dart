@@ -4,7 +4,7 @@ import 'rapi_colors.dart';
 class GetStartedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-  const GetStartedButton({Key? key, required this.onPressed, this.text = "Get Started"}) : super(key: key);
+  const GetStartedButton({super.key, required this.onPressed, this.text = "Get Started"});
 
   @override
   Widget build(BuildContext context) {

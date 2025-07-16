@@ -3,7 +3,7 @@ import 'rapi_colors.dart';
 
 class MobileInputField extends StatelessWidget {
   final TextEditingController controller;
-  const MobileInputField({Key? key, required this.controller}) : super(key: key);
+  const MobileInputField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

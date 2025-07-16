@@ -6,7 +6,7 @@ import 'custom_widgets/get_started.dart';
 import 'custom_widgets/rapi_colors.dart';
 
 class ThirdPage extends StatefulWidget {
-  const ThirdPage({Key? key}) : super(key: key);
+  const ThirdPage({super.key});
 
   @override
   State<ThirdPage> createState() => _ThirdPageState();
@@ -71,7 +71,7 @@ class _ThirdPageState extends State<ThirdPage> {
                       physics: NeverScrollableScrollPhysics(),
                       child: Column(
                         children: [
-                          ...options.map((section) => buildSection(section)).toList(),
+                          ...options.map((section) => buildSection(section)),
                           const SizedBox(height: 80), // Add space for bottom bar
                         ],
                       ),

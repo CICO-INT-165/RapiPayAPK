@@ -3,7 +3,7 @@ import 'rapi_colors.dart';
 
 class BackToAppBtn extends StatelessWidget {
   final VoidCallback? onTap;
-  const BackToAppBtn({Key? key, this.onTap}) : super(key: key);
+  const BackToAppBtn({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {

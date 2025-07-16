@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
 }
 
 class RapiPayHomePage extends StatefulWidget {
-  const RapiPayHomePage({Key? key}) : super(key: key);
+  const RapiPayHomePage({super.key});
 
   @override
   State<RapiPayHomePage> createState() => _RapiPayHomePageState();
@@ -152,7 +152,7 @@ class _RapiPayHomePageState extends State<RapiPayHomePage> {
 class MobileInputField extends StatelessWidget {
   final TextEditingController controller;
 
-  const MobileInputField({Key? key, required this.controller}) : super(key: key);
+  const MobileInputField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
