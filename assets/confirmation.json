@@ -13,19 +13,19 @@
             "title": "Confirmation",
             "confirmationData": [
                 {
-                    "hintText": "",
+                    "hintText": "Enter your Aadhaar number",
                     "subTitle": "Do you have your mobile number linked with your Aadhar ?",
                     "isVisibleEdit": false,
                     "deeplink": "rapipay://deeplink?p=aadharConfirmation&td_id=0",
                     "editValue": {
-                        "editable": true,
+                        "editable": false,
                         "text": "",
                         "tag": "aadharNumber"
                     },
                     "id": "1",
                     "tag": "aadharConfirmation",
                     "title": "Aadhar Detail",
-                    "isEnable": true
+                    "isEnable": false
                 },
                 {
                     "subTitle": "Do you have a Udyam certificate number?",

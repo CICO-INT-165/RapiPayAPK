@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'custom_widgets/back_to_app_btn.dart';
 import 'custom_widgets/get_started.dart';
 import 'custom_widgets/rapi_colors.dart';
+import 'popups/confirmation_sheet.dart';
+import 'popups/consent_sheet.dart';
 
 class ThirdPage extends StatefulWidget {
   const ThirdPage({super.key});
@@ -25,14 +27,13 @@ class _ThirdPageState extends State<ThirdPage> {
   }
 
   Future<void> loadJson() async {
-    final String response = await rootBundle.loadString('assets/selet_user_type.json');
+    final String response = await rootBundle.loadString(
+      'assets/selet_user_type.json',
+    );
     final data = json.decode(response);
-    print("Loaded JSON: $data"); 
     setState(() {
       pageData = data['apiResponseData']?['pageData'];
       options = pageData?['data'] ?? [];
-      print("pageData: $pageData"); 
-      print("options: $options");   
       // Set default selections if any
       for (var section in options) {
         final arr = section['array'] as List<dynamic>;
@@ -65,32 +66,42 @@ class _ThirdPageState extends State<ThirdPage> {
                       textAlign: TextAlign.center,
                     ),
                   const SizedBox(height: 4),
-                  // Make the main content scrollable if needed
-                  Expanded(
+                  SizedBox(
+                    height: 600, // Set your desired fixed height here
                     child: SingleChildScrollView(
-                      physics: NeverScrollableScrollPhysics(),
                       child: Column(
                         children: [
                           ...options.map((section) => buildSection(section)),
-                          const SizedBox(height: 80), // Add space for bottom bar
+                          const SizedBox(height: 3),
                         ],
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  if (pageData?['description'] != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        pageData!['description'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                 ],
               ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 0),
+        padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (pageData?['isCtaEnable'] == true)
               GetStartedButton(
                 text: pageData?['ctaTxt'] ?? "Continue",
-                onPressed: () {
-                  _showConfirmationSheet(context);
-                },
+                onPressed: () => _showConfirmationSheet(context),
               ),
             Align(
               alignment: Alignment.bottomLeft,
@@ -117,29 +128,19 @@ class _ThirdPageState extends State<ThirdPage> {
     final tag = section['tag'];
     final selectedIdx = selectedIndexes[tag] ?? 0;
 
-    // Set a reasonable max height for the scrollable area inside each tile
-
-    Widget optionsWidget;
-    if (arr.length > 3) {
-      optionsWidget = SizedBox(
-        height: 180,
-        child: Scrollbar(
-          thumbVisibility: false,
-          child: SingleChildScrollView(
-            child: Column(
-              children: arr.asMap().entries.map((entry) => buildOption(section, entry.key, entry.value, selectedIdx)).toList(),
-            ),
-          ),
-        ),
-      );
-    } else {
-      optionsWidget = Column(
-        children: arr.asMap().entries.map((entry) => buildOption(section, entry.key, entry.value, selectedIdx)).toList(),
-      );
-    }
+    Widget optionsWidget = Column(
+      children: arr
+          .asMap()
+          .entries
+          .map(
+            (entry) =>
+                buildOption(section, entry.key, entry.value, selectedIdx),
+          )
+          .toList(),
+    );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0), // Reduced vertical gap
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
       child: ExpansionTile(
         initiallyExpanded: true,
         shape: const RoundedRectangleBorder(
@@ -164,7 +165,12 @@ class _ThirdPageState extends State<ThirdPage> {
     );
   }
 
-  Widget buildOption(Map<String, dynamic> section, int idx, dynamic item, int selectedIdx) {
+  Widget buildOption(
+    Map<String, dynamic> section,
+    int idx,
+    dynamic item,
+    int selectedIdx,
+  ) {
     final tag = section['tag'];
     if (item['editable'] == true) {
       return Padding(
@@ -191,9 +197,21 @@ class _ThirdPageState extends State<ThirdPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(item['title'] ?? "", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(
+                    item['title'] ?? "",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
                   if ((item['subTitle'] ?? "").isNotEmpty)
-                    Text(item['subTitle'], style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                    Text(
+                      item['subTitle'],
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -230,7 +248,8 @@ class _ThirdPageState extends State<ThirdPage> {
               Text(item['title'] ?? "", style: const TextStyle(fontSize: 16)),
               const Spacer(),
               if (item['imgIcon'] != null)
-                item['imgIcon'] is String && (item['imgIcon'] as String).isNotEmpty
+                item['imgIcon'] is String &&
+                        (item['imgIcon'] as String).isNotEmpty
                     ? Image.network(
                         item['imgIcon'],
                         height: 32,
@@ -245,24 +264,8 @@ class _ThirdPageState extends State<ThirdPage> {
     }
   }
 
-  // Confirmation sheet
-  void _showConfirmationSheet(BuildContext context) async {
-    final String response = await rootBundle.loadString('assets/confirmation.json');
-    final data = json.decode(response);
-    final pageData = data['apiResponseData']?['pageData'];
-    final bool isCtaEnable = pageData?['isCtaEnable'] == true;
-    final List<dynamic> confirmationData = pageData?['confirmationData'] ?? [];
-    final String ctaTxt = pageData?['ctaTxt'] ?? "Continue";
-
-    if (!isCtaEnable) return;
-
-    // Maintain switch and text field state for each item
-    List<bool> switchStates = confirmationData.map((item) => item['isEnable'] == true).toList();
-    List<TextEditingController> controllers = confirmationData.map((item) {
-      final editValue = item['editValue'];
-      return TextEditingController(text: editValue != null ? (editValue['text'] ?? '') : '');
-    }).toList();
-
+  // Show confirmation sheet
+  void _showConfirmationSheet(BuildContext context) {
     showModalBottomSheet(
       backgroundColor: Colors.white,
       enableDrag: false,
@@ -272,225 +275,28 @@ class _ThirdPageState extends State<ThirdPage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 16, right: 16, top: 16,
-          ),
-          child: StatefulBuilder(
-            builder: (context, setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Header
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      const Expanded(
-                        child: Text(
-                          "Confirmation",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  const SizedBox(height: 8),
-                  // Cards
-                  ...confirmationData.asMap().entries.map((entry) {
-                    int idx = entry.key;
-                    var item = entry.value;
-                    final bool hasEdit = item['editValue'] != null && item['editValue']['editable'] == true;
-                    final String editHint = item['editHint'] ?? '';
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(item['title'] ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                                    if ((item['subTitle'] ?? '').isNotEmpty)
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4.0),
-                                        child: Text(item['subTitle'], style: const TextStyle(fontSize: 13, color: Colors.black54)),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                              Switch(
-                                value: switchStates[idx],
-                                activeColor: const Color(0xFF60269E),
-                                onChanged: (val) {
-                                  setState(() {
-                                    switchStates[idx] = val;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                          if (hasEdit && switchStates[idx])
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: TextField(
-                                controller: controllers[idx],
-                                enabled: switchStates[idx],
-                                decoration: InputDecoration(
-                                  hintText: editHint,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    );
-                  }),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF60269E),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                        onPressed: () {
-                        Navigator.of(context).pop(); // Close the confirmation sheet
-                        _showConsentSheet(context);   // Show the consent sheet
-                        // Handle continue logic here
-                        },
-                      child: Text(
-                        ctaTxt,
-                        style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              );
-            },
-          ),
+        return ConfirmationSheet(
+          onContinue: () {
+            Future.delayed(const Duration(milliseconds: 200), () {
+              _showConsentSheet(context);
+            });
+          },
         );
       },
     );
   }
 
-  // Consent sheet
-  void _showConsentSheet(BuildContext context) async {
-    final String response = await rootBundle.loadString('assets/consent.json');
-    final data = json.decode(response);
-    final pageData = data['apiResponseData']?['pageData'];
-
-    // Map all fields from JSON
-    final String consentHeaderTitle = pageData?['consentHeaderTitle'] ?? "Consent";
-    final String consentTitle = pageData?['consentTitle'] ?? "";
-    final String consentFirstCtaTxt = pageData?['consentFirstCtaTxt'] ?? "Agree";
-    final String consentSecondCtaTxt = pageData?['consentSecondCtaTxt'] ?? "Disagree";
-    final bool isConsentFirstCtaEnable = pageData?['isConsentFirstCtaEnable'] ?? false;
-    final bool isConsentSecondCtaEnable = pageData?['isConsentSecondCtaEnable'] ?? false;
-
+  // Show consent sheet
+  void _showConsentSheet(BuildContext context) {
     showModalBottomSheet(
       backgroundColor: Colors.white,
-      context: context,
       enableDrag: false,
+      context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 16, right: 16, top: 16,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  Expanded(
-                    child: Text(
-                      consentHeaderTitle,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-              const Divider(),
-              const SizedBox(height: 16),
-              Text(
-                consentTitle,
-                style: const TextStyle(fontSize: 15, color: Colors.black87),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              if (isConsentFirstCtaEnable)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF60269E),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      // Add navigation or logic for Agree here
-                    },
-                    child: Text(consentFirstCtaTxt, style: const TextStyle(fontSize: 16, color: Colors.white)),
-                  ),
-                ),
-              if (isConsentFirstCtaEnable) const SizedBox(height: 16),
-              if (isConsentSecondCtaEnable)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 240, 25, 211),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      // Add navigation or logic for Disagree here
-                    },
-                    child: Text(consentSecondCtaTxt, style: const TextStyle(fontSize: 16, color: Colors.white)),
-                  ),
-                ),
-              if (isConsentSecondCtaEnable) const SizedBox(height: 16),
-            ],
-          ),
-        );
-      },
+      builder: (context) => const ConsentSheet(),
     );
   }
 }
