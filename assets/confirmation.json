@@ -1,0 +1,51 @@
+{
+    "apiResponseCode": "200",
+    "apiResponseMessage": "Success",
+    "apiResponseFrom": "NODE_GET_PAGE_CONTENT",
+    "apiResponseTime": "2024-03-19 11:02:38",
+    "apiResponseData": {
+        "responseCode": "200",
+        "responseMessage": "Success",
+        "pageData": {
+            "subTitle": "",
+            "deeplink": "rapipay://deeplink?p=aadharConfirmation&td_id=0",
+            "isCtaEnable": true,
+            "title": "Confirmation",
+            "confirmationData": [
+                {
+                    "hintText": "",
+                    "subTitle": "Do you have your mobile number linked with your Aadhar ?",
+                    "isVisibleEdit": false,
+                    "deeplink": "rapipay://deeplink?p=aadharConfirmation&td_id=0",
+                    "editValue": {
+                        "editable": true,
+                        "text": "",
+                        "tag": "aadharNumber"
+                    },
+                    "id": "1",
+                    "tag": "aadharConfirmation",
+                    "title": "Aadhar Detail",
+                    "isEnable": true
+                },
+                {
+                    "subTitle": "Do you have a Udyam certificate number?",
+                    "editHint": "Enter your Udyam number",
+                    "isVisibleEdit": false,
+                    "deeplink": "rapipay://deeplink?p=aadharConfirmation&td_id=0",
+                    "editValue": {
+                        "editable": true,
+                        "text": "",
+                        "tag": "udhyamNumber"
+                    },
+                    "id": "2",
+                    "tag": "udhyamConfirmation",
+                    "title": "Udyam Detail",
+                    "isEnable": false
+                }
+            ],
+            "ctaTxt": "Continue"
+        },
+        "deeplink": "",
+        "url": ""
+    }
+}

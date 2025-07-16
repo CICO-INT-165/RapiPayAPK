@@ -1,0 +1,22 @@
+{
+    "apiResponseCode": "200",
+    "apiResponseMessage": "Success",
+    "apiResponseFrom": "NODE_GET_PAGE_CONTENT",
+    "apiResponseTime": "2024-03-19 11:07:29",
+    "apiResponseData": {
+        "responseCode": "200",
+        "responseMessage": "Success",
+        "pageData": {
+            "consentFirstCtaDeeplink": "rapipay: //deeplink?p=webView&td_id=1",
+            "isConsentSecondCtaEnable": true,
+            "isConsentFirstCtaEnable": true,
+            "consentFirstCtaTxt": "Agree",
+            "consentHeaderTitle": "Consent",
+            "consentSecondCtaDeeplink": "rapipay://deeplink?p=webView&td_id=1",
+            "consentTitle": "By clicking on Agree - you are hereby:Acknowlegde the request made by Digio to provide personal details. -Provide my unconditional access, store and copy all information therein by sharing the information.",
+            "consentSecondCtaTxt": "Disagree"
+        },
+        "deeplink": "",
+        "url": ""
+    }
+}

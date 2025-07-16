@@ -63,6 +63,9 @@ flutter:
     - assets/animations/center_anim.json
     - assets/animations/get_started 2.json
     - assets/response.json
+    - assets/selet_user_type.json
+    - assets/confirmation.json
+    - assets/consent.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

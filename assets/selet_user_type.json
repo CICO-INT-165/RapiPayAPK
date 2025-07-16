@@ -1,0 +1,167 @@
+{
+    "apiResponseCode": "200",
+    "apiResponseMessage": "Success",
+    "apiResponseFrom": "NODE_GET_PAGE_CONTENT",
+    "apiResponseTime": "2024-03-19 10:59:04",
+    "apiResponseData": {
+        "responseCode": "200",
+        "responseMessage": "Success",
+        "pageData": {
+            "subTitle": "",
+            "data": [
+                {
+                    "default": false,
+                    "ctaText": "",
+                    "subTitle": "",
+                    "array": [
+                        {
+                            "imgIcon": "https://clf.rapipayuat.com/resources/",
+                            "default": false,
+                            "groupName": "Want to apply for ?",
+                            "subTitle": "Accept payment via QR",
+                            "groupId": 1,
+                            "isSelected": false,
+                            "viewType": 2,
+                            "id": 12,
+                            "tag": "userType",
+                            "title": "QR",
+                            "parentId": 1
+                        }
+                    ],
+                    "isSelected": false,
+                    "viewType": 1,
+                    "isCtaEnable": false,
+                    "deeplinkString": "",
+                    "id": 1,
+                    "tag": "userType",
+                    "title": "Want to apply for ?",
+                    "isCollapse": false
+                },
+                {
+                    "default": false,
+                    "ctaText": "",
+                    "subTitle": "",
+                    "array": [
+                        {
+                            "imgIcon": "https://clf.rapipayuat.com/resources/commonimages/indivisual.png",
+                            "default": true,
+                            "groupName": "",
+                            "subTitle": "",
+                            "groupId": 0,
+                            "isSelected": false,
+                            "viewType": 3,
+                            "id": 13,
+                            "tag": "doBusinessAs",
+                            "title": "Individual",
+                            "isCollapse": false,
+                            "parentId": 2
+                        },
+                        {
+                            "imgIcon": "https://clf.rapipayuat.com/resources/commonimages/proprietor.png",
+                            "default": true,
+                            "groupName": "",
+                            "subTitle": "",
+                            "groupId": 0,
+                            "isSelected": false,
+                            "viewType": 3,
+                            "id": 14,
+                            "tag": "doBusinessAs",
+                            "title": "Proprietor",
+                            "isCollapse": false,
+                            "parentId": 2
+                        }
+                    ],
+                    "isSelected": false,
+                    "viewType": 1,
+                    "isCtaEnable": false,
+                    "deeplinkString": "",
+                    "id": 2,
+                    "tag": "doBusinessAs",
+                    "title": "Want to do Business As?",
+                    "isCollapse": false
+                },
+                {
+                    "default": false,
+                    "ctaText": "",
+                    "subTitle": "",
+                    "array": [
+                        {
+                            "imgIcon": 2131230948,
+                            "default": true,
+                            "groupName": "",
+                            "subTitle": "",
+                            "groupId": 0,
+                            "isSelected": false,
+                            "viewType": 4,
+                            "id": 15,
+                            "tag": "annualIncome",
+                            "title": "3 to 5 lakh",
+                            "code": "3-to-5-lac",
+                            "isCollapse": false,
+                            "parentId": 3
+                        },
+                        {
+                            "imgIcon": 2131230948,
+                            "default": true,
+                            "groupName": "",
+                            "subTitle": "",
+                            "groupId": 0,
+                            "isSelected": false,
+                            "viewType": 4,
+                            "id": 16,
+                            "tag": "annualIncome",
+                            "title": "5 to 10 lakh",
+                            "code": "5-to-10-lac",
+                            "isCollapse": false,
+                            "parentId": 3
+                        },
+                        {
+                            "imgIcon": 2131230948,
+                            "default": true,
+                            "groupName": "",
+                            "subTitle": "",
+                            "groupId": 0,
+                            "isSelected": false,
+                            "viewType": 4,
+                            "id": 17,
+                            "tag": "annualIncome",
+                            "title": "10 to 20 lakh",
+                            "code": "10-lac-to-25-lac",
+                            "isCollapse": false,
+                            "parentId": 3
+                        },
+                        {
+                            "imgIcon": 2131230948,
+                            "default": true,
+                            "groupName": "",
+                            "subTitle": "",
+                            "groupId": 21,
+                            "isSelected": false,
+                            "viewType": 4,
+                            "id": 0,
+                            "tag": "annualIncome",
+                            "title": "20 lakh and above",
+                            "code": "above-25-lac",
+                            "isCollapse": false,
+                            "parentId": 3
+                        }
+                    ],
+                    "isSelected": false,
+                    "viewType": 1,
+                    "isCtaEnable": false,
+                    "deeplinkString": "",
+                    "id": 3,
+                    "tag": "annualIncome",
+                    "title": "Your Annual business turnover",
+                    "isCollapse": false
+                }
+            ],
+            "deeplink": "rapipay://deeplink?p=mainScreen&td_id=0",
+            "isCtaEnable": true,
+            "title": "Select Your Type",
+            "ctaTxt": "continue"
+        },
+        "deeplink": "",
+        "url": ""
+    }
+}
