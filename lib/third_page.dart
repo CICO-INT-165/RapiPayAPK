@@ -17,6 +17,8 @@ class _ThirdPageState extends State<ThirdPage> {
   Map<String, dynamic>? pageData;
   List<dynamic> options = [];
   Map<String, int> selectedIndexes = {};
+  Map<String, bool> inputError = {};
+  Map<String, TextEditingController> inputControllers = {};
   bool isLoading = true;
 
   @override
@@ -38,9 +40,24 @@ class _ThirdPageState extends State<ThirdPage> {
         final arr = section['array'] as List<dynamic>;
         int defaultIdx = arr.indexWhere((e) => e['default'] == true);
         selectedIndexes[section['tag']] = defaultIdx >= 0 ? defaultIdx : 0;
+        for (var item in arr) {
+          if (item['userInput'] != null) {
+            final tag = item['userInput']['tag'];
+            inputControllers[tag] = TextEditingController();
+            inputError[tag] = false;
+          }
+        }
       }
       isLoading = false;
     });
+  }
+
+  @override
+  void dispose() {
+    for (var controller in inputControllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   // New: Fetch confirmation deeplink and navigate
@@ -68,6 +85,7 @@ class _ThirdPageState extends State<ThirdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true, // This is true by default, but you can set it explicitly
       backgroundColor: Colors.white,
       body: SafeArea(
         child: isLoading || pageData == null
@@ -87,8 +105,7 @@ class _ThirdPageState extends State<ThirdPage> {
                       textAlign: TextAlign.center,
                     ),
                   const SizedBox(height: 4),
-                  SizedBox(
-                    height: 600, // Set your desired fixed height here
+                  Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -196,18 +213,16 @@ class _ThirdPageState extends State<ThirdPage> {
     int selectedIdx,
   ) {
     final tag = section['tag'];
-    if (item['editable'] == true) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: TextField(
-          decoration: InputDecoration(
-            labelText: item['title'] ?? '',
-            border: const OutlineInputBorder(),
-          ),
-        ),
-      );
-    }
+    final isSelected = selectedIdx == idx;
+
+    // For userType (switch + userInput + ctaButton)
     if (tag == "userType") {
+      final hasInput = item['userInput'] != null;
+      final inputTag = hasInput ? item['userInput']['tag'] : null;
+      final showInput = isSelected && hasInput;
+      final showSubmit = showInput;
+      final isError = inputTag != null && inputError[inputTag] == true;
+
       return Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(10),
@@ -215,39 +230,142 @@ class _ThirdPageState extends State<ThirdPage> {
           color: Colors.grey.shade100,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item['title'] ?? "",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item['title'] ?? "", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                      if ((item['subTitle'] ?? "").isNotEmpty)
+                        Text(item['subTitle'], style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                    ],
+                  ),
+                ),
+                if (item['imgIcon'] != null && item['imgIcon'] is String)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Image.network(
+                      item['imgIcon'],
+                      height: 32,
+                      width: 32,
+                      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                     ),
                   ),
-                  if ((item['subTitle'] ?? "").isNotEmpty)
-                    Text(
-                      item['subTitle'],
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
+                Switch(
+                  value: isSelected,
+                  activeColor: rapiDarkPurple,
+                  onChanged: (val) {
+                    setState(() {
+                      selectedIndexes[tag] = val ? idx : -1;
+                    });
+                  },
+                ),
+              ],
+            ),
+            if (showInput)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          item['userInput']['title'] ?? '',
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                        const SizedBox(width: 4),
+                        // Show red exclamation if error, else show red asterisk for mandatory
+                        if (isError)
+                          const Icon(Icons.error, color: Colors.red, size: 18),
+                        if (!isError)
+                          const Text(
+                            '*',
+                            style: TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        TextField(
+                          controller: inputControllers[inputTag],
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            hintText: item['userInput']['hint'] ?? '',
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: isError ? Colors.red : Colors.transparent,
+                                width: 1.5,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: isError ? Colors.red : Colors.transparent,
+                                width: 1.5,
+                              ),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                          ),
+                          onChanged: (_) {
+                            if (isError) {
+                              setState(() {
+                                inputError[inputTag!] = false;
+                              });
+                            }
+                          },
+                        ),
+                        if (isError)
+                          const Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.error, color: Colors.red, size: 22),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            if (showSubmit)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: rapiDarkPurple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          final inputVal = inputControllers[inputTag]?.text.trim() ?? '';
+                          if (inputVal.isEmpty) {
+                            setState(() {
+                              inputError[inputTag!] = true;
+                            });
+                          } else {
+                            setState(() {
+                              inputError[inputTag!] = false;
+                            });
+                            // Handle submit logic here
+                          }
+                        },
+                        child: const Text('submit', style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Switch(
-              value: selectedIdx == idx,
-              activeColor: rapiDarkPurple,
-              onChanged: (val) {
-                setState(() {
-                  selectedIndexes[tag] = val ? idx : -1;
-                });
-              },
-            ),
           ],
         ),
       );

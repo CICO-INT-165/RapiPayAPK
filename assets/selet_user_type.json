@@ -2,7 +2,7 @@
     "apiResponseCode": "200",
     "apiResponseMessage": "Success",
     "apiResponseFrom": "NODE_GET_PAGE_CONTENT",
-    "apiResponseTime": "2024-03-19 10:59:04",
+    "apiResponseTime": "2025-07-17 12:32:33",
     "apiResponseData": {
         "responseCode": "200",
         "responseMessage": "Success",
@@ -15,17 +15,44 @@
                     "subTitle": "",
                     "array": [
                         {
-                            "imgIcon": "https://clf.rapipayuat.com/resources/",
+                            "imgIcon": "https://clf.rapipayuat.com/resources/commonimages/agent.png",
                             "default": false,
+                            "isClickable": true,
                             "groupName": "Want to apply for ?",
-                            "subTitle": "Accept payment via QR",
+                            "subTitle": "Become a Rapipay Agent",
                             "groupId": 1,
                             "isSelected": false,
-                            "viewType": 2,
-                            "id": 12,
+                            "viewType": 5,
+                            "id": 11,
                             "tag": "userType",
-                            "title": "QR",
+                            "title": "Agent",
                             "parentId": 1
+                        },
+                        {
+                            "imgIcon": "https://clf.rapipayuat.com/resources/commonimages/fos.png",
+                            "default": false,
+                            "isClickable": true,
+                            "groupName": "Want to apply for ?",
+                            "subTitle": "Become a Rapipay FOS",
+                            "groupId": 1,
+                            "isSelected": false,
+                            "viewType": 5,
+                            "id": 19,
+                            "tag": "userType",
+                            "title": "FOS",
+                            "parentId": 1,
+                            "userInput": {
+                                "text": "",
+                                "title": "Enter the distributor registered Mobile number",
+                                "hint": "Enter Distributor Registered Mobile Number",
+                                "tag": "mobileNumber",
+                                "editable": true
+                            },
+                            "ctaButtonData": {
+                                "title": "submit",
+                                "isCtaEnable": true,
+                                "ctaDeeplink": "validateFosUser"
+                            }
                         }
                     ],
                     "isSelected": false,
@@ -95,8 +122,7 @@
                             "viewType": 4,
                             "id": 15,
                             "tag": "annualIncome",
-                            "title": "3 to 5 lakh",
-                            "code": "3-to-5-lac",
+                            "title": "0 to 5 lakh",
                             "isCollapse": false,
                             "parentId": 3
                         },
@@ -111,7 +137,6 @@
                             "id": 16,
                             "tag": "annualIncome",
                             "title": "5 to 10 lakh",
-                            "code": "5-to-10-lac",
                             "isCollapse": false,
                             "parentId": 3
                         },
@@ -126,7 +151,6 @@
                             "id": 17,
                             "tag": "annualIncome",
                             "title": "10 to 20 lakh",
-                            "code": "10-lac-to-25-lac",
                             "isCollapse": false,
                             "parentId": 3
                         },
@@ -141,7 +165,6 @@
                             "id": 0,
                             "tag": "annualIncome",
                             "title": "20 lakh and above",
-                            "code": "above-25-lac",
                             "isCollapse": false,
                             "parentId": 3
                         }
@@ -159,7 +182,8 @@
             "deeplink": "rapipay://deeplink?p=mainScreen&td_id=0",
             "isCtaEnable": true,
             "title": "Select Your Type",
-            "ctaTxt": "continue"
+            "ctaTxt": "continue",
+            "isDistributorNumberVerified": false
         },
         "deeplink": "",
         "url": ""
