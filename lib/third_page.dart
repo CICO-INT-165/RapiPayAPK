@@ -4,8 +4,7 @@ import 'package:flutter/services.dart';
 import 'custom_widgets/back_to_app_btn.dart';
 import 'custom_widgets/get_started.dart';
 import 'custom_widgets/rapi_colors.dart';
-import 'popups/confirmation_sheet.dart';
-import 'popups/consent_sheet.dart';
+import 'utils/deeplink_navigation.dart'; // <-- Add this import
 
 class ThirdPage extends StatefulWidget {
   const ThirdPage({super.key});
@@ -42,6 +41,28 @@ class _ThirdPageState extends State<ThirdPage> {
       }
       isLoading = false;
     });
+  }
+
+  // New: Fetch confirmation deeplink and navigate
+  Future<void> navigateToConfirmation(BuildContext context) async {
+    final String response = await rootBundle.loadString('assets/confirmation.json');
+    final data = json.decode(response);
+    final pageData = data['apiResponseData']?['pageData'];
+    final deeplink = pageData?['deeplink'] ?? '';
+    if (deeplink.isNotEmpty) {
+      handleDeeplinkNavigation(context, deeplink);
+    }
+  }
+
+  Future<void> navigateToConsent(BuildContext context) async {
+    final String response = await rootBundle.loadString('assets/consent.json');
+    final data = json.decode(response);
+    final pageData = data['apiResponseData']?['pageData'];
+    // You can use either consentFirstCtaDeeplink or consentSecondCtaDeeplink as per your logic
+    final deeplink = pageData?['consentFirstCtaDeeplink'] ?? '';
+    if (deeplink.isNotEmpty) {
+      handleDeeplinkNavigation(context, deeplink);
+    }
   }
 
   @override
@@ -101,7 +122,10 @@ class _ThirdPageState extends State<ThirdPage> {
             if (pageData?['isCtaEnable'] == true)
               GetStartedButton(
                 text: pageData?['ctaTxt'] ?? "Continue",
-                onPressed: () => _showConfirmationSheet(context),
+                onPressed: () {
+                  // Use deeplink navigation from confirmation.json
+                  navigateToConfirmation(context);
+                },
               ),
             Align(
               alignment: Alignment.bottomLeft,
@@ -262,41 +286,5 @@ class _ThirdPageState extends State<ThirdPage> {
         ),
       );
     }
-  }
-
-  // Show confirmation sheet
-  void _showConfirmationSheet(BuildContext context) {
-    showModalBottomSheet(
-      backgroundColor: Colors.white,
-      enableDrag: false,
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return ConfirmationSheet(
-          onContinue: () {
-            Future.delayed(const Duration(milliseconds: 200), () {
-              _showConsentSheet(context);
-            });
-          },
-        );
-      },
-    );
-  }
-
-  // Show consent sheet
-  void _showConsentSheet(BuildContext context) {
-    showModalBottomSheet(
-      backgroundColor: Colors.white,
-      enableDrag: false,
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => const ConsentSheet(),
-    );
   }
 }

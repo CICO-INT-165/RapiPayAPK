@@ -162,3 +162,13 @@ class _ConfirmationSheetState extends State<ConfirmationSheet> {
     );
   }
 }
+
+// When showing the confirmation sheet, pass this as the onContinue:
+// ConfirmationSheet(
+//   onContinue: () {
+//     // After confirmation, open consent page using the deeplink from consent.json
+//     Future.delayed(const Duration(milliseconds: 200), () {
+//       navigateToConsent(context);
+//     });
+//   },
+// )
