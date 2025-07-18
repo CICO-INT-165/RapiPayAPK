@@ -11,7 +11,7 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Color(0xFF60269E), // Use your dark purple
-      statusBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light
     ),
   );
   runApp(const MyApp());
